@@ -2,58 +2,50 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Mi Página</title>
+<title>Mi Página del Carro</title>
 <style>
 /* Estilo del cuerpo */
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    background-color: black;
     font-family: Arial, sans-serif;
-    position: relative;
+    background-color: black;
+    color: white;
 }
 
-/* Imagen de fondo reducida */
+/* Imagen de fondo */
 .fondo {
     position: absolute;
-    width: 400px;          /* ancho de la imagen */
-    height: 300px;         /* alto de la imagen */
-    background-image: url("capture2.PNG");
-
-
-
+    width: 400px;
+    height: 300px;
+    background-image: url("capture2.PNG"); /* ahora está en la raíz */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.5;          /* transparencia opcional */
+    opacity: 0.5;
     top: 50px;
     z-index: 0;
 }
 
-/* Contenedor de todo el contenido */
+/* Contenedor principal */
 .contenido {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;             /* espacio entre elementos */
-    position: relative;
-    z-index: 1;
-    color: white;
+    gap: 20px;
     text-align: center;
-}
-
-/* Estilo de la info (teléfono, correo) */
-.info {
-    font-size: 20px;
+    margin-top: 400px; /* para no tapar el fondo */
 }
 
 /* Botones */
 .boton {
     padding: 15px 40px;
-    font-size: 22px;
+    font-size: 20px;
     background: black;
     color: white;
     text-decoration: none;
@@ -64,6 +56,57 @@ body {
 .boton:hover {
     background: red;
 }
+
+/* Álbum de imágenes */
+.album {
+    position: relative;
+    width: 80%;
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+/* Todas las imágenes ocultas por defecto */
+.album img {
+    width: 100%;
+    display: none;
+    border-radius: 10px;
+}
+
+/* Imagen visible */
+.album img.active {
+    display: block;
+}
+
+/* Botones del álbum */
+.album .prev,
+.album .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    padding: 10px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.5);
+    user-select: none;
+    transition: 0.3s;
+}
+
+.album .prev:hover,
+.album .next:hover {
+    background-color: rgba(255,0,0,0.8);
+}
+
+.album .prev {
+    left: 0;
+}
+
+.album .next {
+    right: 0;
+}
 </style>
 </head>
 <body>
@@ -73,18 +116,48 @@ body {
 
 <!-- Contenido principal -->
 <div class="contenido">
-    <p class="info">Teléfono: +34 123 456 789</p>
-    <p class="info">Correo: ejemplo@mail.com</p>
+    <p>Teléfono: +34 123 456 789</p>
+    <p>Correo: ejemplo@mail.com</p>
 
-    <!-- Botón de descargar -->
     <a class="boton" href="nido.pdf" download>Descargar PDF</a>
-
-    <!-- Botón de llamar (móvil) -->
     <a class="boton" href="tel:+34123456789">Llamar</a>
-
-    <!-- Botón de correo (móvil o web) -->
     <a class="boton" href="mailto:ejemplo@mail.com">Enviar Correo</a>
+
+    <!-- Álbum de imágenes -->
+    <div class="album">
+        <img src="proceso1.png" class="active" alt="Proceso 1">
+        <img src="proceso2.png" alt="Proceso 2">
+        <img src="proceso3.png" alt="Proceso 3">
+        <img src="proceso4.png" alt="Proceso 4">
+
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+    </div>
 </div>
+
+<script>
+// Carrusel del álbum
+let slideIndex = 0;
+const slides = document.querySelectorAll('.album img');
+
+function showSlide(n) {
+    slides.forEach(img => img.classList.remove('active'));
+    slides[n].classList.add('active');
+}
+
+document.querySelector('.next').addEventListener('click', () => {
+    slideIndex = (slideIndex + 1) % slides.length;
+    showSlide(slideIndex);
+});
+
+document.querySelector('.prev').addEventListener('click', () => {
+    slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+    showSlide(slideIndex);
+});
+
+// Muestra la primera imagen al cargar
+showSlide(slideIndex);
+</script>
 
 </body>
 </html>

@@ -1,162 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Mi Página del Carro</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Proceso de Pintura</title>
 <style>
-/* Estilo del cuerpo */
-body {
+  body {
     margin: 0;
-    min-height: 100vh;
+    background: #000;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
+    overflow: hidden;
     font-family: Arial, sans-serif;
-    background-color: black;
-    color: white;
-}
-
-/* Imagen de fondo */
-.fondo {
-    position: absolute;
-    width: 400px;
-    height: 300px;
-    background-image: url("capture2.PNG"); /* ahora está en la raíz */
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.5;
-    top: 50px;
-    z-index: 0;
-}
-
-/* Contenedor principal */
-.contenido {
+  }
+  .album {
     position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-    margin-top: 400px; /* para no tapar el fondo */
-}
-
-/* Botones */
-.boton {
-    padding: 15px 40px;
-    font-size: 20px;
-    background: black;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: 0.3s;
-}
-
-.boton:hover {
-    background: red;
-}
-
-/* Álbum de imágenes */
-.album {
-    position: relative;
-    width: 80%;
-    max-width: 600px;
-    margin: 40px auto;
-    text-align: center;
-}
-
-/* Todas las imágenes ocultas por defecto */
-.album img {
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .album img {
     width: 100%;
+    height: auto;
     display: none;
-    border-radius: 10px;
-}
-
-/* Imagen visible */
-.album img.active {
+    border-radius: 12px;
+  }
+  .album img.active {
     display: block;
-}
-
-/* Botones del álbum */
-.album .prev,
-.album .next {
-    cursor: pointer;
+  }
+  .nav-btn {
     position: absolute;
     top: 50%;
-    padding: 10px;
-    margin-top: -22px;
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.3);
+    border: none;
+    color: black;
+    font-size: 2rem;
+    padding: 8px 16px;
+    cursor: pointer;
     border-radius: 50%;
-    background-color: rgba(0,0,0,0.5);
     user-select: none;
-    transition: 0.3s;
-}
-
-.album .prev:hover,
-.album .next:hover {
-    background-color: rgba(255,0,0,0.8);
-}
-
-.album .prev {
-    left: 0;
-}
-
-.album .next {
-    right: 0;
-}
+  }
+  .nav-btn:hover {
+    background: rgba(255,255,255,0.7);
+  }
+  .prev { left: 8px; }
+  .next { right: 8px; }
 </style>
 </head>
 <body>
 
-<!-- Imagen de fondo -->
-<div class="fondo"></div>
-
-<!-- Contenido principal -->
-<div class="contenido">
-    <p>Teléfono: +34 123 456 789</p>
-    <p>Correo: ejemplo@mail.com</p>
-
-    <a class="boton" href="nido.pdf" download>Descargar PDF</a>
-    <a class="boton" href="tel:+34123456789">Llamar</a>
-    <a class="boton" href="mailto:ejemplo@mail.com">Enviar Correo</a>
-
-    <!-- Álbum de imágenes -->
-    <div class="album">
-        <img src="proceso1.png" class="active" alt="Proceso 1">
-        <img src="proceso2.png" alt="Proceso 2">
-        <img src="proceso3.png" alt="Proceso 3">
-        <img src="proceso4.png" alt="Proceso 4">
-
-        <button class="prev">&#10094;</button>
-        <button class="next">&#10095;</button>
-    </div>
+<div class="album">
+  <img src="proceso1.PNG" alt="Proceso 1" class="active" />
+  <img src="proceso2.PNG" alt="Proceso 2" />
+  <img src="proceso3.PNG" alt="Proceso 3" />
+  <img src="proceso4.PNG" alt="Proceso 4" />
+  
+  <button class="nav-btn prev">&#10094;</button>
+  <button class="nav-btn next">&#10095;</button>
 </div>
 
 <script>
-// Carrusel del álbum
-let slideIndex = 0;
-const slides = document.querySelectorAll('.album img');
+  const slides = document.querySelectorAll('.album img');
+  const prevBtn = document.querySelector('.prev');
+  const nextBtn = document.querySelector('.next');
+  let current = 0;
 
-function showSlide(n) {
+  function showSlide(index) {
     slides.forEach(img => img.classList.remove('active'));
-    slides[n].classList.add('active');
-}
+    slides[index].classList.add('active');
+  }
 
-document.querySelector('.next').addEventListener('click', () => {
-    slideIndex = (slideIndex + 1) % slides.length;
-    showSlide(slideIndex);
-});
+  prevBtn.addEventListener('click', () => {
+    current = (current - 1 + slides.length) % slides.length;
+    showSlide(current);
+  });
 
-document.querySelector('.prev').addEventListener('click', () => {
-    slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-    showSlide(slideIndex);
-});
+  nextBtn.addEventListener('click', () => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  });
 
-// Muestra la primera imagen al cargar
-showSlide(slideIndex);
+  // Mostrar la primera imagen al cargar
+  showSlide(current);
 </script>
 
 </body>

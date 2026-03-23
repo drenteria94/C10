@@ -14,23 +14,42 @@
     height: 100vh;
     overflow: hidden;
     font-family: Arial, sans-serif;
+    position: relative;
   }
+
+  /* Imagen de fondo en la esquina superior izquierda */
+  .fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;   /* ancho de la imagen */
+    height: 200px;  /* alto de la imagen */
+    background-image: url("capture2.png"); /* tu imagen de fondo */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top left;
+    opacity: 0.5; /* transparencia opcional */
+    z-index: 0; /* detrás del carrusel */
+  }
+
   .album {
     position: relative;
     max-width: 90vw;
     max-height: 90vh;
     overflow: hidden;
     border-radius: 12px;
+    z-index: 1; /* encima del fondo */
   }
+
   .album img {
     width: 100%;
     height: auto;
     display: none;
     border-radius: 12px;
+    cursor: pointer;
   }
-  .album img.active {
-    display: block;
-  }
+  .album img.active { display: block; }
+
   .nav-btn {
     position: absolute;
     top: 50%;
@@ -44,48 +63,87 @@
     border-radius: 50%;
     user-select: none;
   }
-  .nav-btn:hover {
-    background: rgba(255,255,255,0.7);
-  }
+  .nav-btn:hover { background: rgba(255,255,255,0.7); }
   .prev { left: 8px; }
   .next { right: 8px; }
+
+  /* Lightbox */
+  #lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  #lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #fff;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
+<!-- Imagen de fondo -->
+<div class="fondo"></div>
+
 <div class="album">
-  <img src="proceso1.png" alt="Proceso 1" class="active" />
-  <img src="proceso2.png" alt="Proceso 2" />
-  <img src="proceso3.png" alt="Proceso 3" />
-  <img src="proceso4.png" alt="Proceso 4" />
+  <img src="proceso1.PNG" alt="Proceso 1" class="active" />
+  <img src="proceso2.PNG" alt="Proceso 2" />
+  <img src="proceso3.PNG" alt="Proceso 3" />
+  <img src="proceso4.PNG" alt="Proceso 4" />
   
   <button class="nav-btn prev">&#10094;</button>
   <button class="nav-btn next">&#10095;</button>
 </div>
 
+<!-- Lightbox -->
+<div id="lightbox">
+  <img src="" alt="Imagen Ampliada">
+</div>
+
 <script>
-  const slides = document.querySelectorAll('.album img');
-  const prevBtn = document.querySelector('.prev');
-  const nextBtn = document.querySelector('.next');
-  let current = 0;
+const slides = document.querySelectorAll('.album img');
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+let current = 0;
 
-  function showSlide(index) {
-    slides.forEach(img => img.classList.remove('active'));
-    slides[index].classList.add('active');
-  }
+function showSlide(index) {
+  slides.forEach(img => img.classList.remove('active'));
+  slides[index].classList.add('active');
+}
 
-  prevBtn.addEventListener('click', () => {
-    current = (current - 1 + slides.length) % slides.length;
-    showSlide(current);
-  });
-
-  nextBtn.addEventListener('click', () => {
-    current = (current + 1) % slides.length;
-    showSlide(current);
-  });
-
-  // Mostrar la primera imagen al cargar
+prevBtn.addEventListener('click', () => {
+  current = (current - 1 + slides.length) % slides.length;
   showSlide(current);
+});
+
+nextBtn.addEventListener('click', () => {
+  current = (current + 1) % slides.length;
+  showSlide(current);
+});
+
+showSlide(current);
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+
+slides.forEach(img => {
+  img.addEventListener('click', () => {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+  });
+});
+
+lightbox.addEventListener('click', () => {
+  lightbox.style.display = 'none';
+});
 </script>
 
 </body>

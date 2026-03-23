@@ -4,134 +4,174 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Proceso de Pintura</title>
+
 <style>
-  body {
-    margin: 0;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    position: relative;
-  }
+body {
+  margin: 0;
+  background: #000;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
 
-  /* Imagen de fondo en la esquina superior izquierda */
- 
+/* Imagen arriba izquierda */
+.fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background-image: url("captura1.PNG"); /* tu imagen */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top left;
+  opacity: 0.7;
+  z-index: 0;
+}
 
-  .album {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow: hidden;
-    border-radius: 12px;
-    z-index: 1; /* encima del fondo */
-  }
+/* Texto del proyecto */
+.info-proyecto {
+  position: absolute;
+  top: 210px;
+  left: 20px;
+  color: white;
+  font-size: 13px;
+  z-index: 2;
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  border-radius: 8px;
+}
 
-  .album img {
-    width: 100%;
-    height: auto;
-    display: none;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-  .album img.active { display: block; }
+/* Álbum centrado */
+.album {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1;
+}
 
-  .nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.3);
-    border: none;
-    color: black;
-    font-size: 2rem;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 50%;
-    user-select: none;
-  }
-  .nav-btn:hover { background: rgba(255,255,255,0.7); }
-  .prev { left: 8px; }
-  .next { right: 8px; }
+.album img {
+  width: 100%;
+  display: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
 
-  /* Lightbox */
-  #lightbox {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-  #lightbox img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #fff;
-    cursor: pointer;
-  }
+.album img.active {
+  display: block;
+}
+
+/* Botones */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.3);
+  border: none;
+  color: black;
+  font-size: 2rem;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.nav-btn:hover {
+  background: rgba(255,255,255,0.7);
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* Lightbox */
+#lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}
 </style>
 </head>
+
 <body>
 
 <!-- Imagen de fondo -->
 <div class="fondo"></div>
 
+<!-- Información del proyecto -->
+<div class="info-proyecto">
+  <p><strong>Proyecto:</strong> Pintura completa</p>
+  <p><strong>Color:</strong> Negro brillante</p>
+  <p><strong>Tiempo:</strong> 5 días</p>
+</div>
+
+<!-- Álbum -->
 <div class="album">
-  <img src="proceso1.png" alt="Proceso 1" class="active" />
-  <img src="proceso2.png" alt="Proceso 2" />
-  <img src="proceso3.png" alt="Proceso 3" />
-  <img src="proceso4.png" alt="Proceso 4" />
-  
+  <img src="proceso1.png" class="active">
+  <img src="proceso2.png">
+  <img src="proceso3.png">
+  <img src="proceso4.png">
+
   <button class="nav-btn prev">&#10094;</button>
   <button class="nav-btn next">&#10095;</button>
 </div>
 
 <!-- Lightbox -->
 <div id="lightbox">
-  <img src="" alt="Imagen Ampliada">
+  <img src="">
 </div>
 
 <script>
 const slides = document.querySelectorAll('.album img');
-const prevBtn = document.querySelector('.prev');
-const nextBtn = document.querySelector('.next');
-let current = 0;
-
-function showSlide(index) {
-  slides.forEach(img => img.classList.remove('active'));
-  slides[index].classList.add('active');
-}
-
-prevBtn.addEventListener('click', () => {
-  current = (current - 1 + slides.length) % slides.length;
-  showSlide(current);
-});
-
-nextBtn.addEventListener('click', () => {
-  current = (current + 1) % slides.length;
-  showSlide(current);
-});
-
-showSlide(current);
-
-// Lightbox
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = lightbox.querySelector('img');
 
+let index = 0;
+
+function showSlide(i) {
+  slides.forEach(img => img.classList.remove('active'));
+  slides[i].classList.add('active');
+}
+
+prev.onclick = () => {
+  index = (index - 1 + slides.length) % slides.length;
+  showSlide(index);
+};
+
+next.onclick = () => {
+  index = (index + 1) % slides.length;
+  showSlide(index);
+};
+
 slides.forEach(img => {
-  img.addEventListener('click', () => {
-    lightbox.style.display = 'flex';
+  img.onclick = () => {
+    lightbox.style.display = "flex";
     lightboxImg.src = img.src;
-  });
+  };
 });
 
-lightbox.addEventListener('click', () => {
-  lightbox.style.display = 'none';
-});
+lightbox.onclick = () => {
+  lightbox.style.display = "none";
+};
+
+showSlide(index);
 </script>
 
 </body>

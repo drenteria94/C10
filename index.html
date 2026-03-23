@@ -15,15 +15,6 @@
     overflow: hidden;
     font-family: Arial, sans-serif;
   }
-  
-
-
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.5;          /* transparencia opcional */
-    top: 50px;
-    z-index: 0;
   .album {
     position: relative;
     max-width: 90vw;
@@ -56,21 +47,17 @@
   .nav-btn:hover {
     background: rgba(255,255,255,0.7);
   }
-  .prev {
-    left: 8px;
-  }
-  .next {
-    right: 8px;
-  }
+  .prev { left: 8px; }
+  .next { right: 8px; }
 </style>
 </head>
 <body>
 
 <div class="album">
-  <img src="antes1.jpg" alt="Antes 1" class="active" />
-  <img src="antes2.jpg" alt="Antes 2" />
-  <img src="despues1.jpg" alt="Después 1" />
-  <img src="despues2.jpg" alt="Después 2" />
+  <img src="proceso1.png" alt="Proceso 1" class="active" />
+  <img src="proceso2.png" alt="Proceso 2" />
+  <img src="proceso3.png" alt="Proceso 3" />
+  <img src="proceso4.png" alt="Proceso 4" />
   
   <button class="nav-btn prev">&#10094;</button>
   <button class="nav-btn next">&#10095;</button>
@@ -96,6 +83,9 @@
     current = (current + 1) % slides.length;
     showSlide(current);
   });
+
+  // Mostrar la primera imagen al cargar
+  showSlide(current);
 </script>
 
 </body>
